@@ -54,12 +54,27 @@ const loggingMiddleware = morgan(
   { stream, skip }
 )
 
+const validateAuthObject = (schema) => async (req, res, next) => {
+  const resource = req.body
+
+  try {
+    await schema.validate(resource)
+
+    next()
+  } catch (err) {
+    logger.error(err)
+
+    res.status(400).json({ error: err.errors.join(', ') })
+  }
+}
+
 const endPoint404 = (req, res, next) => {
   next(createHttpError(404))
 }
 
 const errorHandler = (error, req, res, next) => {
   logger.error(error.message)
+  logger.debug(error.errors)
 
   if (error.name === 'CastError') {
     return res.status(400).json({
@@ -100,8 +115,8 @@ const errorHandler = (error, req, res, next) => {
     return res.status(403).json({ email: error.message })
   }
 
-  if (error.message === 'invalid login credentials!') {
-    return res.status(403).json({ email: error.message })
+  if (error.message === 'Invalid login credentials!') {
+    return res.status(401).json({ error: error.message })
   }
 
   next(error)
@@ -113,6 +128,7 @@ const middlewares = {
   errorHandler,
   tokenExtractor,
   userExtractor,
+  validateAuthObject,
 }
 
 export default middlewares

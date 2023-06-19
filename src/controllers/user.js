@@ -1,76 +1,66 @@
 import config from '../utils/config'
+require('express-async-errors')
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
-import { authSchema } from '../utils/validatorSchema'
-
 import User from '../models/user'
+//import logger from '../utils/logger'
 
 const signup = async (req, res) => {
-  const { body } = req
+  const { email, password } = req.body
 
-  const foundUser = await User.findOne({ email: req.body.email })
+  const foundUser = await User.findOne({ email })
 
-  if (foundUser) {
-    throw Error('Email already in use.')
-  }
+  if (foundUser) throw Error('Email already in use.')
 
-  try {
-    const data = authSchema.validateSync(body, {
-      abortEarly: false,
-      stripUnknown: true,
-    })
+  //logger.debug(JSON.stringify(body, null, 2))
 
-    if (data) {
-      const saltRounds = 10
+  const saltRounds = 10
 
-      const passwordHash = await bcrypt.hash(req.body.password, saltRounds)
+  const passwordHash = await bcrypt.hash(password, saltRounds)
 
-      const user = new User({
-        email: req.body.email,
-        passwordHash: passwordHash,
-      })
+  const newUser = new User({
+    email: email,
+    passwordHash: passwordHash,
+  })
 
-      await User.create(user)
+  await User.create(newUser)
 
-      return res.status(200).send(res.status.message)
-    }
-  } catch (err) {
-    return res.status(422).json({ errors: err.message })
-  }
+  return res.status(200).send('ok')
 }
 
 const signin = async (req, res) => {
-  const { body } = req
+  const { email, password } = req.body
 
-  const user = await User.findOne({ email: req.body.email })
+  const user = await User.findOne({ email })
+  const correctPassword =
+    user !== null ? bcrypt.compare(password, user.passwordHash) : false
 
-  const verifyPassword = bcrypt.compare(req.body.password, user.passwordHash)
+  if (!(user && correctPassword)) throw Error('Invalid login credentials!')
 
-  if (!verifyPassword) throw Error('invalid login credentials!')
+  const payload = {
+    email: user.email,
+    id: user.id,
+  }
 
+  const token = jwt.sign(payload, config.secret, { expiresIn: '1h' })
+
+  res.status(200).json({ success: true, token: token })
+}
+
+const privateRoute = async (req, res) => {
   try {
-    const data = authSchema.validateSync(body, {
-      abortEarly: false,
-      stripUnknown: true,
-    })
+    //logger.debug(req.user)
+    const currentUser = req.user
 
-    if (data) {
-      const payload = {
-        username: user.email,
-        id: user.id,
-      }
-
-      const token = jwt.sign(payload, config.secret, { expiresIn: '1h' })
-
-      res.status(200).json({ success: true, token: token })
-    }
+    res.status(200).json({ email: currentUser.email })
   } catch (err) {
-    return res.status(422).json({ errors: err.message })
+    res.status(422).json({ error: err.message })
   }
 }
 
 export default {
   signup,
   signin,
+  privateRoute,
 }

@@ -1,0 +1,31 @@
+### register
+POST http://localhost:3000/api/user/register
+Content-Type: application/json
+
+{
+   "email": "sample1@sr.io",
+   "password": "passW1#/"
+}
+
+### login
+POST http://localhost:3000/api/user/login
+Content-Type: application/json
+
+{
+   "email": "sample1@sr.io",
+   "password": "passW1#/"
+}
+
+
+### secret route
+GET http://localhost:3000/api/private
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbXBsZTFAc3IuaW8iLCJpZCI6IjY0OTA5ZDY0MzdhZGI3Y2UwYWYzOTZiZCIsImlhdCI6MTY4NzIwMDg1OSwiZXhwIjoxNjg3MjA0NDU5fQ.2gU2WvpF673wyTtGgvDZduH0hh3Skw1gZztV9bbKgXM
+
+### create todos
+PUT http://localhost:3000/api/todos
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbXBsZTFAc3IuaW8iLCJpZCI6IjY0OTA5ZDY0MzdhZGI3Y2UwYWYzOTZiZCIsImlhdCI6MTY4NzIxMDMxOSwiZXhwIjoxNjg3MjEzOTE5fQ.5ZNwmY02o5GxNdcc5tYdQbhRC0whDRFSpuR3hLusEK8
+
+{
+   "item": "Code2"
+}

@@ -2,26 +2,26 @@ import config from './config.js'
 import mongoose from 'mongoose'
 import logger from './logger.js'
 
+const opts = {
+  autoIndex: true,
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}
+
 const MongoDatabase = () => {
   mongoose.set('strictQuery', false)
 
   const dbURL = config.mongo_url
 
-  const opts = {
-    autoIndex: true,
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
-
   mongoose.connect(dbURL, opts)
 
-  const db = mongoose.connection
+  const conn = mongoose.connection
 
-  db.once('open', () => {
-    logger.debug(`Database connected: ${dbURL}`)
+  conn.once('open', () => {
+    logger.info(`Database connected: ${dbURL}`)
   })
 
-  db.on('error', (error) => {
+  conn.on('error', (error) => {
     logger.error(`connection error: ${error}`)
   })
 }
