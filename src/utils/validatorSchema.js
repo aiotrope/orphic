@@ -1,6 +1,8 @@
 import * as yup from 'yup'
 
-const password_regex = /^[a-zA-Z0-9$&+,:;=?@#|'<>.^*()%!-{}€"'ÄöäÖØÆ`~_]{8,}$/gm
+/* eslint-disable-next-line no-useless-escape */
+const password_regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[~`!@#$%^&*()-_+={}[]|\;:"<>,.\]).{8,}$/gm
+/* eslint-enable-next-line no-useless-escape */
 
 export const authSchema = yup
   .object({
