@@ -30,11 +30,18 @@ router.get(
   userController.privateRoute
 )
 
-router.put(
+router.post(
   '/todos',
   middlewares.validateAuthObject(createTodoSchema),
   passport.authenticate('jwt', { session: false }),
   todoController.createTodo
+)
+
+router.patch(
+  '/todos/:id',
+  middlewares.validateAuthObject(createTodoSchema),
+  passport.authenticate('jwt', { session: false }),
+  todoController.updateTodo
 )
 
 export default router

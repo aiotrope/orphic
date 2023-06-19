@@ -23,6 +23,6 @@ var signinSchema = yup.object({
 }).required();
 exports.signinSchema = signinSchema;
 var createTodoSchema = yup.object({
-  item: yup.string().trim().required()
+  items: yup.string().trim().required()
 }).required();
 exports.createTodoSchema = createTodoSchema;

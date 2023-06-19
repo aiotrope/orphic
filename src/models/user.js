@@ -7,7 +7,7 @@ const Users = new Schema(
       trim: true,
       required: true,
     },
-    passwordHash: { type: String },
+    bcrypted: { type: String },
   },
   {
     toJSON: { virtuals: true },

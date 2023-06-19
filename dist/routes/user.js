@@ -17,8 +17,11 @@ router.post('/user/login', _middlewares.default.validateAuthObject(_validators.s
 router.get('/private', _passport.default.authenticate('jwt', {
   session: false
 }), _user.default.privateRoute);
-router.put('/todos', _middlewares.default.validateAuthObject(_validators.createTodoSchema), _passport.default.authenticate('jwt', {
+router.post('/todos', _middlewares.default.validateAuthObject(_validators.createTodoSchema), _passport.default.authenticate('jwt', {
   session: false
 }), _todo.default.createTodo);
+router.patch('/todos/:id', _middlewares.default.validateAuthObject(_validators.createTodoSchema), _passport.default.authenticate('jwt', {
+  session: false
+}), _todo.default.updateTodo);
 var _default = router;
 exports.default = _default;

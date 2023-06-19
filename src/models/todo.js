@@ -2,12 +2,7 @@ import { Schema, model } from 'mongoose'
 
 const TodoSchema = new Schema(
   {
-    items: [
-      {
-        type: String,
-        trim: true,
-      },
-    ],
+    items: [String],
     user: {
       type: Schema.Types.ObjectId,
       ref: 'User',

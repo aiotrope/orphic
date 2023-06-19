@@ -8,44 +8,51 @@ import User from '../models/user'
 
 const signup = async (req, res) => {
   const { email, password } = req.body
+  try {
+    const foundUser = await User.findOne({ email })
 
-  const foundUser = await User.findOne({ email })
+    if (foundUser) throw Error('Email already in use.')
 
-  if (foundUser) throw Error('Email already in use.')
+    //logger.debug(JSON.stringify(body, null, 2))
 
-  //logger.debug(JSON.stringify(body, null, 2))
+    const saltRounds = 10
 
-  const saltRounds = 10
+    const bcrypted = await bcrypt.hash(password, saltRounds)
 
-  const passwordHash = await bcrypt.hash(password, saltRounds)
+    const newUser = new User({
+      email: email,
+      bcrypted: bcrypted,
+    })
 
-  const newUser = new User({
-    email: email,
-    passwordHash: passwordHash,
-  })
+    await User.create(newUser)
 
-  await User.create(newUser)
-
-  return res.status(200).send('ok')
+    return res.status(200).send('ok')
+  } catch (err) {
+    res.status(400).json({ error: err.message })
+  }
 }
 
 const signin = async (req, res) => {
   const { email, password } = req.body
 
-  const user = await User.findOne({ email })
-  const correctPassword =
-    user !== null ? bcrypt.compare(password, user.passwordHash) : false
+  try {
+    const user = await User.findOne({ email })
+    const correctPassword =
+      user !== null ? bcrypt.compare(password, user.bcrypted) : false
 
-  if (!(user && correctPassword)) throw Error('Invalid login credentials!')
+    if (!(user && correctPassword)) throw Error('Invalid login credentials!')
 
-  const payload = {
-    email: user.email,
-    id: user.id,
+    const payload = {
+      email: user.email,
+      id: user.id,
+    }
+
+    const token = jwt.sign(payload, config.secret, { expiresIn: '1h' })
+
+    res.status(200).json({ success: true, token: token })
+  } catch (err) {
+    res.status(400).json({ error: err.message })
   }
-
-  const token = jwt.sign(payload, config.secret, { expiresIn: '1h' })
-
-  res.status(200).json({ success: true, token: token })
 }
 
 const privateRoute = async (req, res) => {

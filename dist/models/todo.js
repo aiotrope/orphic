@@ -6,10 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 var _mongoose = require("mongoose");
 var TodoSchema = new _mongoose.Schema({
-  items: [{
-    type: String,
-    trim: true
-  }],
+  items: [String],
   user: {
     type: _mongoose.Schema.Types.ObjectId,
     ref: 'User'
