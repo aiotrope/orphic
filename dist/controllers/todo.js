@@ -12,7 +12,7 @@ var _todo = _interopRequireDefault(require("../models/todo"));
 require('express-async-errors');
 var createTodo = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
-    var items, currentUser, currentUserTodos, newItem;
+    var items, currentUser, currentUserTodos, str, newItem;
     return _regenerator.default.wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
@@ -25,86 +25,75 @@ var createTodo = /*#__PURE__*/function () {
         case 4:
           currentUserTodos = _context.sent;
           _context.prev = 5;
+          str = JSON.stringify(items);
           if (currentUserTodos) {
-            _context.next = 13;
+            _context.next = 14;
             break;
           }
           newItem = new _todo.default({
-            items: [items],
+            items: str,
             user: _mongoose.default.Types.ObjectId(currentUser.id)
           });
-          _context.next = 10;
+          _context.next = 11;
           return _todo.default.create(newItem);
-        case 10:
+        case 11:
           return _context.abrupt("return", res.status(200).send('ok'));
-        case 13:
-          currentUserTodos.items = currentUserTodos.items.concat(items);
-          _context.next = 16;
+        case 14:
+          currentUserTodos.items = currentUserTodos.items.concat(str);
+          _context.next = 17;
           return currentUserTodos.save();
-        case 16:
-          return _context.abrupt("return", res.status(200).send('ok'));
         case 17:
-          _context.next = 22;
-          break;
-        case 19:
-          _context.prev = 19;
+          return _context.abrupt("return", res.status(200).send('ok'));
+        case 20:
+          _context.prev = 20;
           _context.t0 = _context["catch"](5);
           res.status(422).json({
             error: _context.t0.message
           });
-        case 22:
+        case 23:
         case "end":
           return _context.stop();
       }
-    }, _callee, null, [[5, 19]]);
+    }, _callee, null, [[5, 20]]);
   }));
   return function createTodo(_x, _x2) {
     return _ref.apply(this, arguments);
   };
 }();
-var updateTodo = /*#__PURE__*/function () {
+var fetchAllTodos = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(req, res) {
-    var items, id, updates, filter, updateUserTodo;
+    var allTodos;
     return _regenerator.default.wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
-          items = req.body.items;
-          id = req.params.id;
-          updates = {
-            items: items
-          };
-          _context2.prev = 3;
-          filter = {
-            user: id
-          };
-          _context2.next = 7;
-          return _todo.default.findByIdAndUpdate(filter, updates, {
-            new: false,
-            upsert: true
+          _context2.prev = 0;
+          _context2.next = 3;
+          return _todo.default.find({}).populate('user', {
+            email: 1
           });
-        case 7:
-          updateUserTodo = _context2.sent;
-          if (updateUserTodo) res.status(200).send('ok');
-          _context2.next = 14;
+        case 3:
+          allTodos = _context2.sent;
+          res.status(200).json(allTodos);
+          _context2.next = 10;
           break;
-        case 11:
-          _context2.prev = 11;
-          _context2.t0 = _context2["catch"](3);
+        case 7:
+          _context2.prev = 7;
+          _context2.t0 = _context2["catch"](0);
           res.status(422).json({
             error: _context2.t0.message
           });
-        case 14:
+        case 10:
         case "end":
           return _context2.stop();
       }
-    }, _callee2, null, [[3, 11]]);
+    }, _callee2, null, [[0, 7]]);
   }));
-  return function updateTodo(_x3, _x4) {
+  return function fetchAllTodos(_x3, _x4) {
     return _ref2.apply(this, arguments);
   };
 }();
 var _default = {
   createTodo: createTodo,
-  updateTodo: updateTodo
+  fetchAllTodos: fetchAllTodos
 };
 exports.default = _default;

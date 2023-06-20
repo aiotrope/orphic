@@ -11,7 +11,7 @@ var Users = new _mongoose.Schema({
     trim: true,
     required: true
   },
-  bcrypted: {
+  password: {
     type: String
   }
 }, {

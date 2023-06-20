@@ -16,7 +16,7 @@ require('express-async-errors');
 
 var signup = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
-    var _req$body, email, password, foundUser, saltRounds, bcrypted, newUser;
+    var _req$body, email, password, foundUser, saltRounds, hashed, newUser;
     return _regenerator.default.wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
@@ -39,10 +39,10 @@ var signup = /*#__PURE__*/function () {
           _context.next = 10;
           return _bcrypt.default.hash(password, saltRounds);
         case 10:
-          bcrypted = _context.sent;
+          hashed = _context.sent;
           newUser = new _user.default({
             email: email,
-            bcrypted: bcrypted
+            password: hashed
           });
           _context.next = 14;
           return _user.default.create(newUser);
@@ -78,7 +78,7 @@ var signin = /*#__PURE__*/function () {
           });
         case 4:
           user = _context2.sent;
-          correctPassword = user !== null ? _bcrypt.default.compare(password, user.bcrypted) : false;
+          correctPassword = user !== null ? _bcrypt.default.compare(password, user.password) : false;
           if (user && correctPassword) {
             _context2.next = 8;
             break;
