@@ -7,54 +7,50 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
-var _mongoose = _interopRequireDefault(require("mongoose"));
 var _todo = _interopRequireDefault(require("../models/todo"));
 require('express-async-errors');
 var createTodo = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
-    var items, currentUser, currentUserTodos, str, newItem;
+    var currentUser, createOrUpdateUserTodos;
     return _regenerator.default.wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
-          items = req.body.items;
           currentUser = req.user;
+          _context.prev = 1;
           _context.next = 4;
-          return _todo.default.findOne({
+          return _todo.default.findOneAndUpdate({
             user: currentUser.id
+          }, {
+            $push: {
+              items: {
+                $each: req.body.items
+              }
+            }
+          }, {
+            new: true,
+            upsert: true
           });
         case 4:
-          currentUserTodos = _context.sent;
-          _context.prev = 5;
-          str = JSON.stringify(items);
-          if (currentUserTodos) {
-            _context.next = 14;
+          createOrUpdateUserTodos = _context.sent;
+          if (!createOrUpdateUserTodos) {
+            _context.next = 7;
             break;
           }
-          newItem = new _todo.default({
-            items: str,
-            user: _mongoose.default.Types.ObjectId(currentUser.id)
-          });
-          _context.next = 11;
-          return _todo.default.create(newItem);
-        case 11:
           return _context.abrupt("return", res.status(200).send('ok'));
-        case 14:
-          currentUserTodos.items = currentUserTodos.items.concat(str);
-          _context.next = 17;
-          return currentUserTodos.save();
-        case 17:
-          return _context.abrupt("return", res.status(200).send('ok'));
-        case 20:
-          _context.prev = 20;
-          _context.t0 = _context["catch"](5);
+        case 7:
+          _context.next = 12;
+          break;
+        case 9:
+          _context.prev = 9;
+          _context.t0 = _context["catch"](1);
           res.status(422).json({
             error: _context.t0.message
           });
-        case 23:
+        case 12:
         case "end":
           return _context.stop();
       }
-    }, _callee, null, [[5, 20]]);
+    }, _callee, null, [[1, 9]]);
   }));
   return function createTodo(_x, _x2) {
     return _ref.apply(this, arguments);
@@ -69,6 +65,7 @@ var fetchAllTodos = /*#__PURE__*/function () {
           _context2.prev = 0;
           _context2.next = 3;
           return _todo.default.find({}).populate('user', {
+            id: 1,
             email: 1
           });
         case 3:
