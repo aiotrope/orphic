@@ -7,7 +7,7 @@ import User from '../models/user'
 //import logger from '../utils/logger'
 
 const signup = async (req, res) => {
-  const { email, password } = req.body
+  let { email, password } = req.body
   try {
     const foundUser = await User.findOne({ email })
 
@@ -17,11 +17,11 @@ const signup = async (req, res) => {
 
     const saltRounds = 10
 
-    const bcrypted = await bcrypt.hash(password, saltRounds)
+    const hashed = await bcrypt.hash(password, saltRounds)
 
     const newUser = new User({
       email: email,
-      bcrypted: bcrypted,
+      password: hashed,
     })
 
     await User.create(newUser)
@@ -33,12 +33,12 @@ const signup = async (req, res) => {
 }
 
 const signin = async (req, res) => {
-  const { email, password } = req.body
+  let { email, password } = req.body
 
   try {
     const user = await User.findOne({ email })
     const correctPassword =
-      user !== null ? bcrypt.compare(password, user.bcrypted) : false
+      user !== null ? bcrypt.compare(password, user.password) : false
 
     if (!(user && correctPassword)) throw Error('Invalid login credentials!')
 

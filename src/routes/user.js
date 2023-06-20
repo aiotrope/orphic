@@ -37,11 +37,10 @@ router.post(
   todoController.createTodo
 )
 
-router.patch(
-  '/todos/:id',
-  middlewares.validateAuthObject(createTodoSchema),
+router.get(
+  '/todos',
   passport.authenticate('jwt', { session: false }),
-  todoController.updateTodo
+  todoController.fetchAllTodos
 )
 
 export default router

@@ -12,7 +12,7 @@ POST http://localhost:3000/api/user/login
 Content-Type: application/json
 
 {
-   "email": "sample1@sr.io",
+   "email": "sample2@sr.io",
    "password": "passW1#/"
 }
 
@@ -21,11 +21,17 @@ Content-Type: application/json
 GET http://localhost:3000/api/private
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbXBsZTJAc3IuaW8iLCJpZCI6IjY0OTBkNmIwY2Y4NTIyNGIxNzMxZGE1ZiIsImlhdCI6MTY4NzIxMzgxMCwiZXhwIjoxNjg3MjE3NDEwfQ.ALDnoDlV5b1nSihoeOyzoBgpJqPAnbHMhMKrGbZYVPw
 
-### create todos
+### create todo
 POST http://localhost:3000/api/todos
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbXBsZTFAc3IuaW8iLCJpZCI6IjY0OTA5ZDY0MzdhZGI3Y2UwYWYzOTZiZCIsImlhdCI6MTY4NzIxNTAwNiwiZXhwIjoxNjg3MjE4NjA2fQ.CXXbB0xQpkhnH-r9rYpMdjGuy6mpjxAS81zekdk9oYM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbXBsZTJAc3IuaW8iLCJpZCI6IjY0OTBlMzZiOWZkMjFkNWIzNjlmNWI0YyIsImlhdCI6MTY4NzIyMDEzNywiZXhwIjoxNjg3MjIzNzM3fQ.Tl3bhltdZd3FSWjokJgXVPh8bw0fk8REFPoT6WXZxJM
 
 {
-   "items": "party4"
+   "items": "code1"
 }
+
+
+### fetch all todos
+GET http://localhost:3000/api/todos
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbXBsZTJAc3IuaW8iLCJpZCI6IjY0OTBlMzZiOWZkMjFkNWIzNjlmNWI0YyIsImlhdCI6MTY4NzIxNzYwMSwiZXhwIjoxNjg3MjIxMjAxfQ.ATei7LXrxkBmT3FxlSpNzE0O5MXe--N903lrXfZMg48
