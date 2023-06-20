@@ -51,7 +51,7 @@ var signup = /*#__PURE__*/function () {
         case 17:
           _context.prev = 17;
           _context.t0 = _context["catch"](1);
-          res.status(400).json({
+          res.status(403).json({
             error: _context.t0.message
           });
         case 20:
