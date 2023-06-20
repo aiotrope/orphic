@@ -28,7 +28,7 @@ const signup = async (req, res) => {
 
     return res.status(200).send('ok')
   } catch (err) {
-    res.status(400).json({ error: err.message })
+    res.status(403).json({ error: err.message })
   }
 }
 
