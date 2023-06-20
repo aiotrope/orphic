@@ -27,6 +27,6 @@ export const signinSchema = yup
 
 export const createTodoSchema = yup
   .object({
-    items: yup.string().trim().required(),
+    items: yup.array().of(yup.string()).min(1).required(),
   })
   .required()

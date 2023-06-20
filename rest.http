@@ -24,10 +24,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbXBsZ
 ### create todo
 POST http://localhost:3000/api/todos
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbXBsZTJAc3IuaW8iLCJpZCI6IjY0OTBlMzZiOWZkMjFkNWIzNjlmNWI0YyIsImlhdCI6MTY4NzIyMDEzNywiZXhwIjoxNjg3MjIzNzM3fQ.Tl3bhltdZd3FSWjokJgXVPh8bw0fk8REFPoT6WXZxJM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbXBsZTJAc3IuaW8iLCJpZCI6IjY0OTBlMzZiOWZkMjFkNWIzNjlmNWI0YyIsImlhdCI6MTY4NzI1NzAyNiwiZXhwIjoxNjg3MjYwNjI2fQ.kMUx2uQsgrg7RFDu5QCqtF_gv8GRC25h_ywYedhq-Ck
 
 {
-   "items": "code1"
+   "items": ["code44", "code3444", "code0002"]
 }
 
 
